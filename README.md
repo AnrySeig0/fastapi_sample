@@ -43,6 +43,9 @@ But you have to rebuild image every time you modify `poetry.lock` or `pyproject.
 docker-compose -f deploy/docker-compose.yml --project-directory . build
 ```
 
+## Local dev:
+After start docker, you can manual start `api` by run file `fastapi_sample\__main__.py`
+
 ## Project structure
 
 ```bash

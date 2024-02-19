@@ -39,6 +39,8 @@ services:
       interval: 2s
       timeout: 3s
       retries: 40
+    ports:
+    - "5432:5432"
 
   redis:
     image: bitnami/redis:6.2.5
@@ -51,8 +53,8 @@ services:
       interval: 1s
       timeout: 3s
       retries: 50
-
-
+    ports:
+    - "6379:6379"
 
 volumes:
   fastapi_sample-db-data:
