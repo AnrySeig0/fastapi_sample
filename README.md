@@ -46,8 +46,76 @@ docker-compose -f deploy/docker-compose.yml --project-directory . build
 ## Local dev:
 After start docker, you can manual start `api` by run file `fastapi_sample\__main__.py`
 
-## Project structure
+## Create Project Option
+```shell
+python -m fastapi_template
+```
+```shell
+API type
+> REST API
+  GrapQL API
+```
+```shell
+Database
+  No database
+  SQLite database
+  MySQL database
+> PostgreSQL database
+├── Description ──────────────────────────────────────────────────────────────────
+| PostgreSQL is second most popular open-source ralational database.
+| It's a good fit for production-grade application
+├────────────────────────────────────────────────────────────────────
+```
+```shell
+ORM
+  Whithout ORMs
+  Ormar
+> SQLAlchemy
+  Tortoise
+  PsycoPG
+  Piccolo
+├── Description ──────────────────────────────────────────────────────────────────
+| SQLAlchemy is the most popular python ORM.
+| It ha a great documentation and a big community around it.
+├────────────────────────────────────────────────────────────────────
+```
+```shell
+CI|CD
+  Do not add CI/CD
+  Gitlab CI
+  Github Action
+├── Description ──────────────────────────────────────────────────────────────────
+| Use this option if you use gitlab as your VCS.
+| This option will add test job in your `.gitlab-ci.yml` file.
+| (To use it please use docker or kubernetes executors).
+├────────────────────────────────────────────────────────────────────
+```
+```shell
+Additional tweaks
+[ ] Use older version of pydantic
+[*] Add redis support
+[ ] Add fastapi-users support
+[ ] Add RabbitMQ support
+[ ] Add Taskiq support
+[ ] Add Migrations
+[ ] Add kubernetes config
+[*] Add dummy model
+[*] Add example router
+[*] Add self hosted swagger
+[*] Add prometheus compatible metrics
+[*] Add sentry integration
+[ ] Add loguru logger
+[ ] Add opentelemetry integration
+[ ] Add traefik labels to docker container
+[ ] Add Kafka support
+[*] Add gunicorn server
+├── Description ──────────────────────────────────────────────────────────────────
+| This option adds gunicorn server for running application.
+| It's more performant than uvicorn, and recommended for production
+├────────────────────────────────────────────────────────────────────
+```
 
+## Project structure
 ```bash
 $ tree "fastapi_sample"
 fastapi_sample
