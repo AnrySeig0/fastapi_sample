@@ -1,0 +1,59 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./deploy/Dockerfile
+      target: prod
+    image: fastapi_sample:${FASTAPI_SAMPLE_VERSION:-latest}
+    restart: always
+    env_file:
+    - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      FASTAPI_SAMPLE_HOST: 0.0.0.0
+      FASTAPI_SAMPLE_DB_HOST: fastapi_sample-db
+      FASTAPI_SAMPLE_DB_PORT: 5432
+      FASTAPI_SAMPLE_DB_USER: fastapi_sample
+      FASTAPI_SAMPLE_DB_PASS: fastapi_sample
+      FASTAPI_SAMPLE_DB_BASE: fastapi_sample
+      FASTAPI_SAMPLE_REDIS_HOST: fastapi_sample-redis
+
+  db:
+    image: postgres:13.8-bullseye
+    hostname: fastapi_sample-db
+    environment:
+      POSTGRES_PASSWORD: "fastapi_sample"
+      POSTGRES_USER: "fastapi_sample"
+      POSTGRES_DB: "fastapi_sample"
+    volumes:
+    - fastapi_sample-db-data:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: pg_isready -U fastapi_sample
+      interval: 2s
+      timeout: 3s
+      retries: 40
+
+  redis:
+    image: bitnami/redis:6.2.5
+    hostname: "fastapi_sample-redis"
+    restart: always
+    environment:
+      ALLOW_EMPTY_PASSWORD: "yes"
+    healthcheck:
+      test: redis-cli ping
+      interval: 1s
+      timeout: 3s
+      retries: 50
+
+
+
+volumes:
+  fastapi_sample-db-data:
+    name: fastapi_sample-db-data
