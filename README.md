@@ -174,6 +174,11 @@ By default it runs:
 * isort (sorts imports in all files);
 * flake8 (spots possible bugs);
 
+Run this cmd to check before commit:
+```shell
+pre-commit run --all-files
+```
+
 
 You can read more about pre-commit here: https://pre-commit.com/
 
