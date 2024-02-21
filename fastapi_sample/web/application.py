@@ -4,13 +4,19 @@ from pathlib import Path
 
 import sentry_sdk
 from fastapi import FastAPI
-from fastapi.responses import UJSONResponse
+from fastapi.exceptions import RequestValidationError
 from fastapi.staticfiles import StaticFiles
 from sentry_sdk.integrations.fastapi import FastApiIntegration
 from sentry_sdk.integrations.logging import LoggingIntegration
 from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
 from fastapi_sample.settings import settings
+from fastapi_sample.web.api.base_response import ProjectJSONResponse
+from fastapi_sample.web.api.exception import (
+    ProjectException,
+    project_http_exception_handler,
+    value_error_exception_handler,
+)
 from fastapi_sample.web.api.router import api_router
 from fastapi_sample.web.lifetime import register_shutdown_event, register_startup_event
 
@@ -48,8 +54,12 @@ def get_app() -> FastAPI:
         docs_url=None,
         redoc_url=None,
         openapi_url="/api/openapi.json",
-        default_response_class=UJSONResponse,
+        default_response_class=ProjectJSONResponse,  # global response for project
     )
+
+    # add Exception Handler
+    app.add_exception_handler(ProjectException, project_http_exception_handler)
+    app.add_exception_handler(RequestValidationError, value_error_exception_handler)
 
     # Adds startup and shutdown events.
     register_startup_event(app)
